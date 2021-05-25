@@ -1,0 +1,28 @@
+<template>
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title"><span class="slds-text-heading_small slds-truncate"><lightning-icon icon-name="doctype:pdf" alternative-text="PDF file" title="PDF"></lightning-icon>Objects Configured</span></h2>
+                </div>
+                <div class="slds-no-flex">
+                    <slot name="actions">
+                        <lightning-button label="New" onclick={clickNew} class="slds-m-left_x-small"></lightning-button>
+                    </slot>
+                </div>
+            </header>
+        </div>
+        <div>
+            <div class="boxTable">
+                <lightning-datatable
+                        key-field="id"
+                        data={data}
+                        columns={columns}>
+                </lightning-datatable>
+            </div>
+        </div>
+        <!--<div class="slds-card__footer">
+            <slot name="footer"><p slot="footer">Card Footer</p></slot>
+        </div>-->
+    </article>
+</template>

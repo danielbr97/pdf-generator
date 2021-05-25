@@ -1,18 +1,12 @@
-# Salesforce DX Project: Next Steps
+# Version 1.0 content
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+* This is the first version of project, contains...
+# Content
 
-## How Do You Plan to Deploy Your Changes?
+* Initial Icon (https://www.flaticon.com/br/icone-gratis/armazenamento-na-nuvem_2921459?term=pdf&page=4&position=39&page=4&position=39&related_id=2921459&origin=search)
+* New Tab to setup objects that will be used
+* Permission set to manage PDF Generator
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
+# Before deploy process
 
-## Configure Your Salesforce DX Project
-
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
-
-## Read All About It
-
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+# After deploy process
