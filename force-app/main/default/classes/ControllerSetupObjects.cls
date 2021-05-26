@@ -10,11 +10,22 @@ public with sharing class ControllerSetupObjects {
     }
 
     @AuraEnabled
-    public static void deleteConfiguration(String recordId){
+    public static String deleteConfiguration(String recordId){
         try {
             Database.delete([SELECT Id FROM Configured_Object__c WHERE Id = :recordId LIMIT 1]);
+            return 'SUCCESS';
+        } catch (Exception e) {
+            System.debug(e.getMessage());
+            return 'ERROR';
+        }
+    }
+
+    /*@AuraEnabled
+    public static List<String> getTemplatesLWC(){
+        try {
+            
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
-    }
+    }*/
 }

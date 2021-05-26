@@ -1,6 +1,7 @@
 import { LightningElement } from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getRecords from '@salesforce/apex/ControllerSetupObjects.getAllRecords';
-import { NavigationMixin } from 'lightning/navigation';
+import deleteRecord from '@salesforce/apex/ControllerSetupObjects.deleteConfiguration';
 
 const actions = [
     { label: 'Show details', name: 'show_details' },
@@ -21,70 +22,15 @@ const columns = [
     },
 ];
 
-export default class PdfGeneratorConfigObjects extends NavigationMixin(LightningElement) {
+export default class PdfGeneratorConfigObjects extends LightningElement {
     data = [];
     columns = columns;
+    modalNew = false;
+    modalDelete = false;
+    rowDelete;
 
     connectedCallback(){
         this.getRecords();
-    }
-
-    clickNew(event){
-
-    }
-
-    handleRowAction(event) {
-        const actionName = event.detail.action.name;
-        const row = event.detail.row;
-        switch (actionName) {
-            case 'delete':
-                this.deleteRow(row);
-                break;
-            case 'show_details':
-                this.showRowDetails(row);
-                break;
-            default:
-        }
-    }
-
-    deleteRow(row) {
-
-
-        /*this[NavigationMixin.Navigate]({
-            type: "standard__component",
-            attributes: {
-                componentName: "c__pdfGeneratorConfigObjectsDelete"
-            },
-            state: {
-                c__propertyValue: '500'
-            }
-        });*/
-
-
-        const { id } = row;
-        const index = this.findRowIndexById(id);
-        if (index !== -1) {
-            this.data = this.data
-                .slice(0, index)
-                .concat(this.data.slice(index + 1));
-        }
-    }
-
-    findRowIndexById(id) {
-        let ret = -1;
-        this.data.some((row, index) => {
-            if (row.id === id) {
-                ret = index;
-                return true;
-            }
-            return false;
-        });
-        return ret;
-    }
-
-    showRowDetails(row) {
-        console.log('ROW ',row.URLObject);
-        window.location.href = row.URLObject;
     }
 
     getRecords(){
@@ -107,4 +53,84 @@ export default class PdfGeneratorConfigObjects extends NavigationMixin(Lightning
         }); 
     }
 
+    deleteRecord(){
+        deleteRecord({recordId : this.rowDelete.Id})
+        .then(result => {
+            if (result === 'SUCCESS') {
+                const evt = new ShowToastEvent({
+                    title: 'Delete',
+                    message: 'Registration successfully deleted.',
+                    variant: 'success',
+                });
+                this.dispatchEvent(evt);
+            }else if(result === 'ERROR'){
+                console.log('ERROR!');
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        }); 
+    }
+
+    handleRowAction(event) {
+        const actionName = event.detail.action.name;
+        const row = event.detail.row;
+        switch (actionName) {
+            case 'delete':
+                this.deleteAction(row);
+                break;
+            case 'show_details':
+                this.showDetailsAction(row);
+                break;
+            default:
+        }
+    }
+
+    deleteAction(row) {
+        this.modalDelete = true;
+        this.rowDelete = row;
+    }
+
+    deleteRecordConfirm(){
+
+        this.deleteRecord();
+        const { id } = this.rowDelete;
+        const index = this.findRowIndexById(id);
+        if (index !== -1) {
+            this.data = this.data
+                .slice(0, index)
+                .concat(this.data.slice(index + 1));
+        }
+        this.closeModalDelete();
+    }
+
+    showDetailsAction(row) {
+        window.location.href = row.URLObject;
+    }
+
+    newAction(event){
+        this.modalNew = true;
+    }
+
+    closeModalNew(event){
+        this.modalNew = false;
+    }
+
+    closeModalDelete(event){
+        this.modalDelete= false;
+        this.rowDelete = null;
+    }
+    
+
+    findRowIndexById(id) {
+        let ret = -1;
+        this.data.some((row, index) => {
+            if (row.id === id) {
+                ret = index;
+                return true;
+            }
+            return false;
+        });
+        return ret;
+    }
 }
