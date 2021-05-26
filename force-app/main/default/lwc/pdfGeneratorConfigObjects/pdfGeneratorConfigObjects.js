@@ -33,6 +33,7 @@ export default class PdfGeneratorConfigObjects extends LightningElement {
         this.getRecords();
     }
 
+    //Actions back-end
     getRecords(){
         getRecords()
         .then(result => {
@@ -52,7 +53,6 @@ export default class PdfGeneratorConfigObjects extends LightningElement {
             console.log(error);
         }); 
     }
-
     deleteRecord(){
         deleteRecord({recordId : this.rowDelete.Id})
         .then(result => {
@@ -72,6 +72,7 @@ export default class PdfGeneratorConfigObjects extends LightningElement {
         }); 
     }
 
+    //Actions in such rows of datable
     handleRowAction(event) {
         const actionName = event.detail.action.name;
         const row = event.detail.row;
@@ -86,15 +87,14 @@ export default class PdfGeneratorConfigObjects extends LightningElement {
         }
     }
 
+    //Delete actions
     deleteAction(row) {
         this.modalDelete = true;
         this.rowDelete = row;
     }
-
     deleteRecordConfirm(){
-
         this.deleteRecord();
-        const { id } = this.rowDelete;
+        const id = this.rowDelete.Id;
         const index = this.findRowIndexById(id);
         if (index !== -1) {
             this.data = this.data
@@ -103,29 +103,32 @@ export default class PdfGeneratorConfigObjects extends LightningElement {
         }
         this.closeModalDelete();
     }
-
-    showDetailsAction(row) {
-        window.location.href = row.URLObject;
-    }
-
-    newAction(event){
-        this.modalNew = true;
-    }
-
-    closeModalNew(event){
-        this.modalNew = false;
-    }
-
     closeModalDelete(event){
         this.modalDelete= false;
         this.rowDelete = null;
     }
-    
 
-    findRowIndexById(id) {
+    //New actions
+    newAction(event){
+        this.modalNew = true;
+    }
+    saveRecordConfirm(event){
+        this
+    }
+    closeModalNew(event){
+        this.modalNew = false;
+    }
+
+    //Show Details action
+    showDetailsAction(row) {
+        window.location.href = row.URLObject;
+    }
+    
+    //Aux
+    findRowIndexById(Id) {
         let ret = -1;
         this.data.some((row, index) => {
-            if (row.id === id) {
+            if (row.Id === Id) {
                 ret = index;
                 return true;
             }

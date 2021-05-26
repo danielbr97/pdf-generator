@@ -21,7 +21,39 @@ public with sharing class ControllerSetupObjects {
     }
 
     /*@AuraEnabled
+    public static Map<String, String> getAllLayouts(){
+        try {
+            
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    @AuraEnabled
+    public static List<String> getAllObjectsName(){
+        try {
+            List<String> listNameObjects = new List<String>();
+            for(Schema.SObjectType nameObject : Schema.getGlobalDescribe().values()){
+                listNameObjects.add(nameObject.getDescribe().getName());
+            }
+            System.debug(listNameObjects);
+            return listNameObjects;
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }*/
+
+    /*@AuraEnabled
     public static List<String> getTemplatesLWC(){
+        try {
+            
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }*/
+
+    /*@AuraEnabled
+    public static string saveNewRecord(){
         try {
             
         } catch (Exception e) {
