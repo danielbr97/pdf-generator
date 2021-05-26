@@ -13,7 +13,8 @@ for(Integer i = 0; i < NUMBER_RECORDS; i++){
     listToInsert.add(new Configured_Object__c(
         Name = '[TEST] Set up '+i,
         Object__c = mapNameSObjects.get(numberRandom),
-        Template__c = 'LWC '+i
+        Template__c = 'LWC '+i,
+        Layout__c = 'Layout test '+i
     ));
 }
 
