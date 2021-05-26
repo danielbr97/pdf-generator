@@ -156,7 +156,7 @@
     <gender>Masculine</gender>
     <label>Configured Object</label>
     <nameField>
-        <label>Objects Configured Name</label>
+        <label>Configuration Name</label>
         <type>Text</type>
     </nameField>
     <pluralLabel>Configured Objects</pluralLabel>
