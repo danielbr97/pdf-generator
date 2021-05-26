@@ -11,15 +11,17 @@ const columns = [
     { label: 'Name', fieldName: 'Name' },
     { label: 'Object', fieldName: 'Object__c' },
     { label: 'Template', fieldName: 'Template__c' },
+    { label: 'Layout', fieldName: 'Layout__c' },
     { label: 'Last Modified Date', fieldName: 'LastModifiedDate', type: 'date' },
     { label: 'Created Date', fieldName: 'CreatedDate', type: 'date' },
+    { label: 'Active', fieldName: 'Activate__c', type: 'boolean' },
     {
         type: 'action',
         typeAttributes: { rowActions: actions },
     },
 ];
 
-export default class PdfGeneratorConfigObjects extends LightningElement {
+export default class PdfGeneratorConfigObjects extends NavigationMixin(LightningElement) {
     data = [];
     columns = columns;
 
@@ -46,15 +48,19 @@ export default class PdfGeneratorConfigObjects extends LightningElement {
     }
 
     deleteRow(row) {
-        this[NavigationMixin.Navigate]({
+
+
+        /*this[NavigationMixin.Navigate]({
             type: "standard__component",
             attributes: {
-                componentName: "c__NavigateToLWC"
+                componentName: "c__pdfGeneratorConfigObjectsDelete"
             },
             state: {
                 c__propertyValue: '500'
             }
-        });
+        });*/
+
+
         const { id } = row;
         const index = this.findRowIndexById(id);
         if (index !== -1) {
@@ -62,6 +68,18 @@ export default class PdfGeneratorConfigObjects extends LightningElement {
                 .slice(0, index)
                 .concat(this.data.slice(index + 1));
         }
+    }
+
+    findRowIndexById(id) {
+        let ret = -1;
+        this.data.some((row, index) => {
+            if (row.id === id) {
+                ret = index;
+                return true;
+            }
+            return false;
+        });
+        return ret;
     }
 
     showRowDetails(row) {

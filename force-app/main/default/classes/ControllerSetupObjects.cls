@@ -1,13 +1,18 @@
 public with sharing class ControllerSetupObjects {
-    
-    public ControllerSetupObjects(){
-
-    }
 
     @AuraEnabled
     public static List<Configured_Object__c> getAllRecords(){
         try {
-            return [SELECT Id, Name, Object__c, Template__c, LastModifiedDate, CreatedDate FROM Configured_Object__c];
+            return [SELECT Id, Activate__c, Name, Object__c, Template__c, LastModifiedDate, CreatedDate FROM Configured_Object__c];
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    @AuraEnabled
+    public static void deleteConfiguration(String recordId){
+        try {
+            Database.delete([SELECT Id FROM Configured_Object__c WHERE Id = :recordId LIMIT 1]);
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
