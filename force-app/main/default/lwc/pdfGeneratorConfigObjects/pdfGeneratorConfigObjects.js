@@ -10,7 +10,7 @@ const actions = [
 const columns = [
     { label: 'Name', fieldName: 'Name' },
     { label: 'Object', fieldName: 'Object__c' },
-    { label: 'Template', fieldName: 'Template__c' },
+    { label: 'Template', fieldName: 'TemplateName' },
     { label: 'Layout', fieldName: 'Layout__c' },
     { label: 'Last Modified Date', fieldName: 'LastModifiedDate', type: 'date' },
     { label: 'Created Date', fieldName: 'CreatedDate', type: 'date' },
@@ -93,6 +93,7 @@ export default class PdfGeneratorConfigObjects extends NavigationMixin(Lightning
             if (result) {
                 result.forEach(element => {
                     element.URLObject = 'https://' + window.location.host + '/' + element.Id;
+                    element.TemplateName = element.Template__r.Name;
                 });
                 this.data = result
                 console.log('DATA -> ',this.data);
