@@ -3,7 +3,7 @@
         <div class="slds-card__header slds-grid">
             <header class="slds-media slds-media_center slds-has-flexi-truncate">
                 <div class="slds-media__body">
-                    <h2 class="slds-card__header-title"><span class="slds-text-heading_small slds-truncate"><lightning-icon icon-name="doctype:pdf" alternative-text="PDF file" title="PDF"></lightning-icon>Objects Configured</span></h2>
+                    <h2 class="slds-card__header-title"><span class="slds-text-heading_small slds-truncate"><lightning-icon icon-name="standard:all" alternative-text="PDF file" title="PDF"></lightning-icon>  Objects Configured</span></h2>
                 </div>
                 <div class="slds-no-flex">
                     <slot name="actions">
@@ -17,6 +17,8 @@
                 <lightning-datatable
                         key-field="id"
                         data={data}
+                        onrowaction={handleRowAction}
+                        hide-checkbox-column
                         columns={columns}>
                 </lightning-datatable>
             </div>
