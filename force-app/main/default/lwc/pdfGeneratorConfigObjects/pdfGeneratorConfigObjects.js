@@ -1,11 +1,12 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getRecords from '@salesforce/apex/ControllerSetupObjects.getAllRecords';
-import deleteRecord from '@salesforce/apex/ControllerSetupObjects.deleteConfiguration';
+
 
 const actions = [
     { label: 'Show details', name: 'show_details' },
     { label: 'Delete', name: 'delete' },
+    { label: 'Activate', name: 'activate' },
 ];
 
 const columns = [
@@ -23,14 +24,14 @@ const columns = [
 ];
 
 export default class PdfGeneratorConfigObjects extends LightningElement {
-    data = [];
+    @track configuredObjectsData = [];
     columns = columns;
-    modalNew = false;
-    modalDelete = false;
+    isLoading = true;
     rowDelete;
 
     connectedCallback(){
         this.getRecords();
+        this.isLoading = false;
     }
 
     //Actions back-end
@@ -42,29 +43,10 @@ export default class PdfGeneratorConfigObjects extends LightningElement {
                     element.URLObject = 'https://' + window.location.host + '/' + element.Id;
                     element.TemplateName = element.Template__r.Name;
                 });
-                this.data = result
-                console.log('DATA -> ',this.data);
+                this.configuredObjectsData = result;
             }else{
                 console.log('ERROR!');
                 console.log('result: ',result);
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        }); 
-    }
-    deleteRecord(){
-        deleteRecord({recordId : this.rowDelete.Id})
-        .then(result => {
-            if (result === 'SUCCESS') {
-                const evt = new ShowToastEvent({
-                    title: 'Delete',
-                    message: 'Registration successfully deleted.',
-                    variant: 'success',
-                });
-                this.dispatchEvent(evt);
-            }else if(result === 'ERROR'){
-                console.log('ERROR!');
             }
         })
         .catch((error) => {
@@ -83,57 +65,36 @@ export default class PdfGeneratorConfigObjects extends LightningElement {
             case 'show_details':
                 this.showDetailsAction(row);
                 break;
+            case 'activate':
+                this.activateAction(row);
+                break;
             default:
         }
     }
 
     //Delete actions
     deleteAction(row) {
-        this.modalDelete = true;
         this.rowDelete = row;
-    }
-    deleteRecordConfirm(){
-        this.deleteRecord();
-        const id = this.rowDelete.Id;
-        const index = this.findRowIndexById(id);
-        if (index !== -1) {
-            this.data = this.data
-                .slice(0, index)
-                .concat(this.data.slice(index + 1));
-        }
-        this.closeModalDelete();
-    }
-    closeModalDelete(event){
-        this.modalDelete= false;
-        this.rowDelete = null;
+        this.template.querySelector('c-pdf-generator-config-objects-delete').openModalDelete();
     }
 
-    //New actions
+    //New action
     newAction(event){
-        this.modalNew = true;
-    }
-    saveRecordConfirm(event){
-        this
-    }
-    closeModalNew(event){
-        this.modalNew = false;
+        this.template.querySelector('c-pdf-generator-config-objects-new').openModalNew();
     }
 
     //Show Details action
     showDetailsAction(row) {
         window.location.href = row.URLObject;
     }
+
+    //Activate action
+    activateAction(row){
+
+    }
     
-    //Aux
-    findRowIndexById(Id) {
-        let ret = -1;
-        this.data.some((row, index) => {
-            if (row.Id === Id) {
-                ret = index;
-                return true;
-            }
-            return false;
-        });
-        return ret;
+    handleOnDatasChanged(event) {
+        console.log('handleOnDatasChanged()');
+        this.configuredObjectsData = event.detail;
     }
 }
